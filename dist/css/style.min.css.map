@@ -1,0 +1,1 @@
+{"version":3,"sources":["style.scss"],"names":[],"mappings":"AAAA,KACE,YAAA,MAAA,CAAA,WACA,WAAA,QACA,MAAA,KACA,OAAA,EACA,QAAA","file":"style.min.css","sourcesContent":["body {\r\n  font-family: 'Roboto', sans-serif;\r\n  background: #fafafa;\r\n  color: #333;\r\n  margin: 0;\r\n  padding: 2rem;\r\n}\r\n"]}
