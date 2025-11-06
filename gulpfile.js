@@ -12,6 +12,7 @@ const paths = {
   html: 'src/*.html',
   styles: 'src/scss/**/*.scss',
   scripts: 'src/js/**/*.js',
+  assets: 'src/assets/**/*',
   dist: 'dist/'
 };
 
@@ -45,8 +46,15 @@ function html() {
     .pipe(browserSync.stream());
 }
 
+// Copy static assets
+function assets() {
+  return gulp.src(paths.assets, { since: gulp.lastRun(assets) })
+    .pipe(gulp.dest(paths.dist + 'assets'))
+    .pipe(browserSync.stream());
+}
+
 // Watch files
-function watchFiles() {
+function watchFiles() { 
   browserSync.init({
     server: { baseDir: './dist' },
     notify: false,
@@ -55,7 +63,12 @@ function watchFiles() {
   gulp.watch(paths.styles, styles);
   gulp.watch(paths.scripts, scripts);
   gulp.watch(paths.html, html);
+  gulp.watch(paths.assets, assets);
 }
 
+const build = gulp.parallel(styles, scripts, html, assets);
+
 // Default task
-exports.default = gulp.series(gulp.parallel(styles, scripts, html), watchFiles);
+exports.assets = assets;
+exports.build = build;
+exports.default = gulp.series(build, watchFiles);
