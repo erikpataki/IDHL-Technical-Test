@@ -11,6 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
 	}
 
 	const openBasket = () => {
+			basketContainer.classList.remove('closing');
 		const scrollbarWidth = window.innerWidth - root.clientWidth;
 		root.style.setProperty('--scrollbar-compensation', `${scrollbarWidth}px`);
 		basketContainer.classList.add('active');
@@ -19,10 +20,26 @@ document.addEventListener('DOMContentLoaded', () => {
 	};
 
 	const closeBasket = () => {
-		basketContainer.classList.remove('active');
-		basketOverlay.classList.remove('active');
-		document.body.classList.remove('basket-open');
-		root.style.setProperty('--scrollbar-compensation', '0px');
+			if (!basketContainer.classList.contains('active')) {
+				return;
+			}
+
+			basketContainer.classList.remove('active');
+			basketContainer.classList.add('closing');
+			basketOverlay.classList.remove('active');
+
+			const handleTransitionEnd = (event) => {
+				if (event.target !== basketContainer || event.propertyName !== 'transform') {
+					return;
+				}
+
+				basketContainer.classList.remove('closing');
+				document.body.classList.remove('basket-open');
+				root.style.setProperty('--scrollbar-compensation', '0px');
+				basketContainer.removeEventListener('transitionend', handleTransitionEnd);
+			};
+
+			basketContainer.addEventListener('transitionend', handleTransitionEnd);
 	};
 
 	basketIcon.addEventListener('click', openBasket);

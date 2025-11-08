@@ -230,6 +230,11 @@ body > * {
   display: flex;
   flex-direction: column;
 
+  &.active,
+  &.closing {
+    visibility: visible;
+  }
+
   &.active {
     transform: translateX(0);
     opacity: 1;
