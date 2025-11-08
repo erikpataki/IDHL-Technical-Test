@@ -21,7 +21,7 @@ html, body {
 
 body {
   margin: 0;
-  margin-top: 7.25rem;
+  padding-top: 7.25rem;
   font-family: vars.$font-base;
   background: vars.$color-surface;
   color: vars.$color-text;
@@ -60,8 +60,9 @@ body > * {
 // }
 
 .header {
-  width: 100vw;
+  width: 100%;
   left: 0;
+  right: 0;
   top: 0;
   position: absolute;
   height: 7.25rem;
@@ -96,12 +97,12 @@ body > * {
 
 .description-header {
   font-size: 2rem;
-  font-weight: normal;
+  font-weight: 400;
 }
 
 .description-body {
   font-size: 1rem;
-  font-weight: normal;
+  font-weight: 400;
   font-family: vars.$font-secondary;
   line-height: 150%;
 }
@@ -111,14 +112,22 @@ body > * {
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
   column-gap: var(--grid-gutter);
   row-gap: var(--grid-margin);
-  padding-inline: var(--grid-margin);
+  // padding-inline: var(--grid-margin);
   align-content: start;
   align-items: center;
   justify-items: center;
   padding-block: 3.83125rem;
-  background-color: #ebf6f8;
-  width: 100vw;
-  margin-left: -1.875rem;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    left: calc(-1 * var(--grid-margin));
+    right: calc(-1 * var(--grid-margin));
+    background-color: #ebf6f8;
+    z-index: -1;
+  }
 }
 
 // .product-card-bg {
@@ -179,10 +188,7 @@ body > * {
 //Your Bag
 .basket-bg-overlay {
   position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
+  inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
   // z-index: 10;
   display: none;
@@ -210,14 +216,13 @@ body > * {
   .basket-header {
     display: flex;
     justify-content: space-between;
-    font-weight: 400;
     padding: 1.625rem 1.5625rem 1rem 1.25rem;
     border-bottom: solid 1px #B8B8B8;
 
     .basket-title {
       font-size: 1.5rem;
       font-style: normal;
-      font-weight: 500;
+      font-weight: 400;
       line-height: 2rem;
       margin: 0;
     }
@@ -254,20 +259,20 @@ body > * {
 
         .basket-item-title {
           font-size: 1rem;
-          font-weight: 500;
+          font-weight: 400;
           line-height: 1.5rem;
         }
 
         .basket-item-price {
           font-size: 1rem;
-          font-weight: 800;
+          font-weight: 700;
           line-height: 1.5rem;
           color: vars.$color-accent;
         }
 
         .basket-remove {
           font-size: 0.75rem;
-          font-weight: 300;
+          font-weight: 400;
           line-height: 1rem;
           color: #B8B8B8;
           cursor: pointer;
@@ -297,7 +302,7 @@ body > * {
 
     .basket-total {
       font-size: 1rem;
-      font-weight: 600;
+      font-weight: 500;
     }
 
     .checkout-button {
@@ -311,7 +316,7 @@ body > * {
       transition: background 0.3s ease;
       font-size: 0.75rem;
       letter-spacing: 0.075rem;
-      font-weight: 300;
+      font-weight: 400;
 
       &:hover {
         background: color.adjust(vars.$color-accent, $lightness: -5%);
