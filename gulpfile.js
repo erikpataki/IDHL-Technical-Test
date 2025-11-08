@@ -48,7 +48,7 @@ function html() {
 
 // Copy static assets
 function assets() {
-  return gulp.src(paths.assets, { since: gulp.lastRun(assets) })
+  return gulp.src(paths.assets, { encoding: false })
     .pipe(gulp.dest(paths.dist + 'assets'))
     .pipe(browserSync.stream());
 }
