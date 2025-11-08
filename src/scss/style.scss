@@ -22,7 +22,7 @@ html, body {
 
 body {
   margin: 0;
-  padding-top: 7.25rem;
+  padding-top: vars.$header-height;
   font-family: vars.$font-base;
   background: vars.$color-surface;
   color: vars.$color-text;
@@ -36,7 +36,21 @@ body {
   padding-right: calc(var(--grid-margin) + var(--scrollbar-compensation));
   align-content: start;
   width: 100%;
-  overflow: auto;
+
+  @media (min-aspect-ratio: 1/1) {
+    --grid-columns: 12;
+    --grid-margin: 2.5rem;
+    --grid-gutter: 1.25rem;
+    overflow: hidden;
+    text-align: left;
+    background: linear-gradient(
+      to right,
+      vars.$color-surface 0,
+      vars.$color-surface calc(50% + (var(--scrollbar-compensation) / 2)),
+      #ebf6f8 calc(50% + (var(--scrollbar-compensation) / 2)),
+      #ebf6f8 100%
+    );
+  }
 }
 
 body.basket-open {
@@ -52,6 +66,12 @@ body > * {
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
   column-gap: var(--grid-gutter);
   row-gap: var(--grid-margin);
+
+  @media (min-aspect-ratio: 1/1) {
+    height: calc(100vh - #{vars.$header-height});
+    align-items: stretch;
+    grid-auto-rows: 1fr;
+  }
 }
 
 .body-container > * {
@@ -72,24 +92,30 @@ body > * {
   right: 0;
   top: 0;
   position: absolute;
-  height: 7.25rem;
+  height: vars.$header-height;
   display: flex;
   justify-content: space-between;
   align-items: center;
   background-color: vars.$color-header;
   padding: 3.75rem 1.625rem 1.625rem 1.625rem;
   padding-right: calc(1.625rem + var(--scrollbar-compensation));
-}
 
-.brand-logo {
-  grid-column: 1 / span 2;
-  justify-self: start;
-}
+  .brand-logo {
+    grid-column: 1 / span 2;
+    justify-self: start;
+  }
 
-.basket-icon {
-  grid-column: -2 / -1;
-  justify-self: end;
-  cursor: pointer;
+  .basket-icon {
+    grid-column: -2 / -1;
+    justify-self: end;
+    cursor: pointer;
+    z-index: 2;
+  }
+
+  @media (min-aspect-ratio: 1/1) {
+    padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+    background-color: transparent;
+  }
 }
 
 .description-container {
@@ -97,16 +123,38 @@ body > * {
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
   row-gap: var(--grid-gutter);
   padding-block: 1.875rem;
+  text-align: center;
+
+  @media (min-aspect-ratio: 1/1) {
+    grid-column: 1 / span 6;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2.5rem;
+    padding: 5rem 3.5rem 5rem calc(var(--grid-margin));
+  }
 }
 
 .description-header,
 .description-body {
   grid-column: 1 / span 6;
+
+  @media (min-aspect-ratio: 1/1) {
+    margin: 0;
+    max-width: 28.75rem;
+  }
 }
 
 .description-header {
   font-size: 2rem;
   font-weight: 400;
+
+  @media (min-aspect-ratio: 1/1) {
+    font-size: 2.5rem;
+    line-height: 1.2;
+  }
 }
 
 .description-body {
@@ -114,6 +162,11 @@ body > * {
   font-weight: 400;
   font-family: vars.$font-secondary;
   line-height: 150%;
+
+  @media (min-aspect-ratio: 1/1) {
+    font-size: 1rem;
+    line-height: 1.6;
+  }
 }
 
 .product-container {
@@ -136,6 +189,25 @@ body > * {
     right: calc(-1 * var(--grid-margin));
     background-color: #ebf6f8;
     z-index: -1;
+    pointer-events: none;
+
+    @media (min-aspect-ratio: 1/1) {
+      display: none;
+    }
+  }
+
+  @media (min-aspect-ratio: 1/1) {
+    grid-column: 7 / span 6;
+    grid-row: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: var(--grid-margin);
+    padding: 5rem calc(var(--grid-margin)) 5rem calc(var(--grid-margin));
+    height: 100%;
+    max-height: none;
+    overflow-y: auto;
   }
 }
 
@@ -156,6 +228,11 @@ body > * {
   box-shadow: 3px 4px 10px 10px rgba(194, 230, 237, 0.5);
   grid-column: 1 / span 6;
   justify-self: center;
+
+    @media (min-aspect-ratio: 1/1) {
+      max-width: 25rem;
+      align-self: center;
+    }
 }
 
 .product-image {
