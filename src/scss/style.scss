@@ -5,6 +5,7 @@
   --grid-columns: 6;
   --grid-margin: 1.875rem;
   --grid-gutter: 0.625rem;
+  --scrollbar-compensation: 0px;
 }
 
 html {
@@ -31,9 +32,15 @@ body {
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
   column-gap: var(--grid-gutter);
   row-gap: var(--grid-margin);
-  padding-inline: var(--grid-margin);
+  padding-left: var(--grid-margin);
+  padding-right: calc(var(--grid-margin) + var(--scrollbar-compensation));
   align-content: start;
   width: 100%;
+  overflow: auto;
+}
+
+body.basket-open {
+  overflow: hidden;
 }
 
 body > * {
@@ -71,6 +78,7 @@ body > * {
   align-items: center;
   background-color: vars.$color-header;
   padding: 3.75rem 1.625rem 1.625rem 1.625rem;
+  padding-right: calc(1.625rem + var(--scrollbar-compensation));
 }
 
 .brand-logo {
@@ -81,6 +89,7 @@ body > * {
 .basket-icon {
   grid-column: -2 / -1;
   justify-self: end;
+  cursor: pointer;
 }
 
 .description-container {
@@ -190,11 +199,14 @@ body > * {
   position: fixed;
   inset: 0;
   background-color: rgba(0, 0, 0, 0.5);
-  // z-index: 10;
-  display: none;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
 
-  .basket-bg-overlay .active {
-    display: block;
+  &.active {
+    opacity: 1;
+    pointer-events: auto;
   }
 }
 
@@ -207,10 +219,22 @@ body > * {
   width: 23rem;
   height: 100vh;
   background-color: vars.$color-surface;
-  display: none;
+  z-index: 20;
+  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.1);
+  transform: translateX(100%);
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: transform 0.35s ease, opacity 0.35s ease;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
-  .basket-container .active {
-    display: block;
+  &.active {
+    transform: translateX(0);
+    opacity: 1;
+    pointer-events: auto;
+    visibility: visible;
   }
 
   .basket-header {
@@ -234,6 +258,9 @@ body > * {
 
   .basket-body {
     padding: 1.5625rem 1.25rem;
+    overflow-y: auto;
+    flex: 1 1 auto;
+    min-height: 0;
 
     .basket-item {
       display: flex;
@@ -242,7 +269,7 @@ body > * {
       text-align: left;
       gap: 0.625rem;
       border-bottom: solid 1px #B8B8B8;
-      padding-bottom: 1.25rem;
+      padding: 1.25rem 0;
 
       .basket-item-image {
         scale: 36vw;
@@ -284,9 +311,7 @@ body > * {
   }
 
   .basket-footer {
-    position: absolute;
-    bottom: 0;
-    width: 23rem;
+    width: 100%;
     padding: 1.625rem 1.25rem 3.12rem 1.25rem;
     border-top: solid 1px #B8B8B8;
     text-align: center;
@@ -295,6 +320,8 @@ body > * {
     align-items: center;
     font-family: vars.$font-base;
     gap: 1.875rem;
+    background-color: white;
+    flex-shrink: 0;
 
     h4 {
       margin: 0;
