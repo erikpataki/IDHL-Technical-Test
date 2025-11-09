@@ -1,17 +1,24 @@
 const basket = document.querySelector('.basket');
 const overlay = document.querySelector('.basket__overlay');
+const loader = document.querySelector('.basket__loader');
 const root = document.documentElement;
 
 function openBasket() {
+	// Show loading state
+	overlay.classList.add('basket__overlay--active');
+	loader.classList.add('basket__loader--active');
+	document.body.classList.add('basket--open');
+
 	// Calculate scrollbar width for layout shift compensation
 	const scrollbarWidth = window.innerWidth - root.clientWidth;
 	root.style.setProperty('--scrollbar-compensation', `${scrollbarWidth}px`);
 	
-	// Open basket with animation
-	basket.classList.remove('basket--closing');
-	basket.classList.add('basket--active');
-	overlay.classList.add('basket__overlay--active');
-	document.body.classList.add('basket--open');
+	// Wait 1 second before opening basket
+	setTimeout(() => {
+		loader.classList.remove('basket__loader--active');
+		basket.classList.remove('basket--closing');
+		basket.classList.add('basket--active');
+	}, 1000);
 }
 
 function closeBasket() {
