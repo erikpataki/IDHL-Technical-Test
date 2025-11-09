@@ -1,72 +1,46 @@
 document.addEventListener('DOMContentLoaded', () => {
+	// Basket open triggers
 	const basketIcon = document.querySelector('.header__basket-icon');
-	const basketContainer = document.querySelector('.basket');
-	const basketOverlay = document.querySelector('.basket__overlay');
+	const addToBagButtons = document.querySelectorAll('.product__button');
+
+	// Basket close triggers
 	const basketClose = document.querySelector('.basket__close');
-		const addToBagButtons = document.querySelectorAll('.product__button');
-	const root = document.documentElement;
+	const continueButton = document.querySelector('.basket__continue');
+	const overlay = document.querySelector('.basket__overlay');
+	const basket = document.querySelector('.basket');
 
-	if (!basketIcon || !basketContainer || !basketOverlay) {
-		return;
+	// Open basket when clicking basket icon
+	if (basketIcon) {
+		basketIcon.addEventListener('click', window.openBasket);
 	}
 
-	const openBasket = () => {
-			basketContainer.classList.remove('basket--closing');
-		const scrollbarWidth = window.innerWidth - root.clientWidth;
-		root.style.setProperty('--scrollbar-compensation', `${scrollbarWidth}px`);
-		basketContainer.classList.add('basket--active');
-		basketOverlay.classList.add('basket__overlay--active');
-		document.body.classList.add('basket--open');
-	};
+	// Open basket when clicking "Add to Bag" buttons
+	addToBagButtons.forEach(button => {
+		button.addEventListener('click', (event) => {
+			event.preventDefault();
+			window.openBasket();
+		});
+	});
 
-	const closeBasket = () => {
-			if (!basketContainer.classList.contains('basket--active')) {
-				return;
-			}
-
-			basketContainer.classList.remove('basket--active');
-			basketContainer.classList.add('basket--closing');
-			basketOverlay.classList.remove('basket__overlay--active');
-
-			const handleTransitionEnd = (event) => {
-				if (event.target !== basketContainer || event.propertyName !== 'transform') {
-					return;
-				}
-
-				basketContainer.classList.remove('basket--closing');
-				document.body.classList.remove('basket--open');
-				root.style.setProperty('--scrollbar-compensation', '0px');
-				basketContainer.removeEventListener('transitionend', handleTransitionEnd);
-			};
-
-			basketContainer.addEventListener('transitionend', handleTransitionEnd);
-	};
-
-	basketIcon.addEventListener('click', openBasket);
-
-		if (addToBagButtons.length) {
-			addToBagButtons.forEach((button) => {
-				button.addEventListener('click', (event) => {
-					event.preventDefault();
-					openBasket();
-				});
-			});
-		}
-
+	// Close basket when clicking X button
 	if (basketClose) {
-		basketClose.addEventListener('click', closeBasket);
+		basketClose.addEventListener('click', window.closeBasket);
 	}
 
-	const basketContinue = document.querySelector('.basket__continue');
-	if (basketContinue) {
-		basketContinue.addEventListener('click', closeBasket);
+	// Close basket when clicking "Continue Shopping"
+	if (continueButton) {
+		continueButton.addEventListener('click', window.closeBasket);
 	}
 
-	basketOverlay.addEventListener('click', closeBasket);
+	// Close basket when clicking off basket (overlay)
+	if (overlay) {
+		overlay.addEventListener('click', window.closeBasket);
+	}
 
+	// Close basket on Escape key
 	document.addEventListener('keydown', (event) => {
-		if (event.key === 'Escape') {
-			closeBasket();
+		if (event.key === 'Escape' && basket.classList.contains('basket--active')) {
+			window.closeBasket();
 		}
 	});
 });

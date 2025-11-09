@@ -1,0 +1,24 @@
+@use 'variables' as vars;
+
+.header {
+    height: vars.$header-height;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: vars.$color-header;
+    padding: 3.75rem 1.625rem 1.625rem 1.625rem;
+
+    &__logo {
+        justify-self: start;
+    }
+
+    &__basket-icon {
+        justify-self: end;
+        cursor: pointer;
+    }
+
+    @media (min-aspect-ratio: 1/1) {
+        padding: 2.5rem 2.5rem 2.5rem 2.5rem;
+        background-color: transparent;
+    }
+}

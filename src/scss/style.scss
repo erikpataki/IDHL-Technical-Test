@@ -1,5 +1,9 @@
 @use 'sass:color';
 @use 'variables' as vars;
+@use 'component-header';
+@use 'component-button';
+@use 'component-product';
+@use 'component-basket';
 
 :root {
   --grid-columns: 6;
@@ -61,6 +65,35 @@ body > * {
   grid-column: 1 / -1;
 }
 
+.header {
+  position: absolute;
+  width: 100%;
+  left: 0;
+  right: 0;
+  top: 0;
+  padding-right: calc(1.625rem + var(--scrollbar-compensation));
+  z-index: 2;
+}
+
+.basket {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  z-index: 20;
+
+  &__overlay {
+    position: fixed;
+    inset: 0;
+    z-index: 10;
+  }
+
+  &--left {
+    right: auto;
+    left: 0;
+  }
+}
+
 .page {
   display: grid;
   grid-template-columns: repeat(var(--grid-columns), minmax(0, 1fr));
@@ -76,38 +109,6 @@ body > * {
 
 .page > * {
   grid-column: 1 / -1;
-}
-
-.header {
-  width: 100%;
-  left: 0;
-  right: 0;
-  top: 0;
-  position: absolute;
-  height: vars.$header-height;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: vars.$color-header;
-  padding: 3.75rem 1.625rem 1.625rem 1.625rem;
-  padding-right: calc(1.625rem + var(--scrollbar-compensation));
-
-  &__logo {
-    grid-column: 1 / span 2;
-    justify-self: start;
-  }
-
-  &__basket-icon {
-    grid-column: -2 / -1;
-    justify-self: end;
-    cursor: pointer;
-    z-index: 2;
-  }
-
-  @media (min-aspect-ratio: 1/1) {
-    padding: 2.5rem 2.5rem 2.5rem 2.5rem;
-    background-color: transparent;
-  }
 }
 
 .description {
@@ -209,243 +210,13 @@ body > * {
     max-height: none;
     overflow-y: auto;
   }
-}
 
-.product {
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  padding: 2.5rem 2.8125rem;
-  background-color: vars.$color-surface;
-  border-radius: 10px;
-  box-shadow: 3px 4px 10px 10px rgba(194, 230, 237, 0.5);
-  grid-column: 1 / span 6;
-  justify-self: center;
-  max-width: 21.125rem;
+  .product {
+    grid-column: 1 / span 6;
+    justify-self: center;
 
-  @media (min-aspect-ratio: 1/1) {
-    align-self: center;
-    align-items: center;
-    text-align: center;
-  }
-
-  &__image {
-    width: 100%;
-    height: auto;
-  }
-
-  &__title {
-    font-weight: normal;
-    font-size: 1.25rem;
-  }
-
-  &__price {
-    color: vars.$color-accent;
-    font-family: vars.$font-secondary;
-    font-size: 1rem;
-    line-height: 140%;
-  }
-
-  &__button {
-    width: 11.1875rem;
-    height: 2.9rem;
-    border-radius: 3.125rem;
-    background: vars.$color-accent;
-    color: vars.$color-surface;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    font-size: 0.75rem;
-    letter-spacing: 0.075rem;
-    font-weight: 400;
-
-    &:hover {
-      background: color.adjust(vars.$color-accent, $lightness: -5%);
+    @media (min-aspect-ratio: 1/1) {
+      align-self: center;
     }
-  }
-}
-
-.basket {
-  padding-top: 2.6875rem;
-  position: fixed;
-  top: 0;
-  right: 0;
-  width: 23rem;
-  height: 100vh;
-  background-color: vars.$color-surface;
-  z-index: 20;
-  box-shadow: -8px 0 24px rgba(0, 0, 0, 0.1);
-  transform: translateX(100%);
-  opacity: 0;
-  pointer-events: none;
-  visibility: hidden;
-  transition: transform 0.35s ease, opacity 0.35s ease;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-
-  &--active,
-  &--closing {
-    visibility: visible;
-  }
-
-  &--active {
-    transform: translateX(0);
-    opacity: 1;
-    pointer-events: auto;
-    visibility: visible;
-  }
-
-  &__overlay {
-    position: fixed;
-    inset: 0;
-    background-color: rgba(0, 0, 0, 0.5);
-    z-index: 10;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity 0.3s ease;
-
-    &--active {
-      opacity: 1;
-      pointer-events: auto;
-    }
-  }
-
-  &__header {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 1.625rem 1.5625rem 1rem 1.25rem;
-    border-bottom: solid 1px #B8B8B8;
-  }
-
-  &__title {
-    font-size: 1.5rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 2rem;
-    margin: 0;
-  }
-
-  &__close {
-    cursor: pointer;
-    width: 0.875rem;
-    height: 0.875rem;
-    flex: 0 0 auto;
-    display: inline-block;
-  }
-
-  &__body {
-    padding: 1.5625rem 1.25rem;
-    overflow-y: auto;
-    flex: 1 1 auto;
-    min-height: 0;
-  }
-
-  &__item {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    text-align: left;
-    gap: 0.625rem;
-    border-bottom: solid 1px #B8B8B8;
-    padding: 1.25rem 0;
-  }
-
-  &__item-image {
-    scale: 36vw;
-    height: auto;
-    width: 8.885rem;
-    height: 7.6875rem;
-  }
-
-  &__item-details {
-    h4 {
-      margin: 0;
-      margin-bottom: 0.3125rem;
-    }
-  }
-
-  &__item-title {
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5rem;
-  }
-
-  &__item-price {
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.5rem;
-    color: vars.$color-accent;
-  }
-
-  &__item-remove {
-    font-size: 0.75rem;
-    font-weight: 400;
-    line-height: 1rem;
-    color: #B8B8B8;
-    cursor: pointer;
-    text-decoration: underline;
-    text-underline-offset: 0.2rem;
-  }
-
-  &__footer {
-    width: 100%;
-    padding: 1.625rem 1.25rem 3.12rem 1.25rem;
-    border-top: solid 1px #B8B8B8;
-    text-align: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    font-family: vars.$font-base;
-    gap: 1.875rem;
-    background-color: white;
-    flex-shrink: 0;
-
-    h4 {
-      margin: 0;
-    }
-  }
-
-  &__total {
-    font-size: 1rem;
-    font-weight: 500;
-  }
-
-  &__checkout {
-    width: 13.5rem;
-    height: 2.925rem;
-    border-radius: 3.125rem;
-    background: vars.$color-accent;
-    color: vars.$color-surface;
-    border: none;
-    cursor: pointer;
-    transition: background 0.3s ease;
-    font-size: 0.75rem;
-    letter-spacing: 0.075rem;
-    font-weight: 400;
-
-    &:hover {
-      background: color.adjust(vars.$color-accent, $lightness: -5%);
-    }
-  }
-
-  &__continue {
-    color: var(--black-text, #000);
-    text-align: center;
-    font-family: Roboto;
-    font-size: 0.75rem;
-    font-style: normal;
-    font-weight: 400;
-    line-height: 1.25rem;
-    letter-spacing: 0.075rem;
-    text-decoration-line: underline;
-    text-decoration-style: solid;
-    text-decoration-skip-ink: none;
-    text-decoration-thickness: 10%;
-    text-underline-offset: 50%;
-    text-underline-position: from-font;
-    cursor: pointer;
   }
 }
