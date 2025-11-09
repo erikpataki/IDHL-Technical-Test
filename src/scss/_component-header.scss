@@ -7,6 +7,9 @@
     align-items: center;
     background-color: vars.$color-header;
     padding: 3.75rem 1.625rem 1.625rem 1.625rem;
+    transform: translateY(0);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    will-change: transform;
 
     &__logo {
         justify-self: start;
@@ -20,5 +23,23 @@
     @media (min-aspect-ratio: 1/1) {
         padding: 2.5rem;
         background-color: transparent;
+    }
+}
+
+.header--hidden {
+    transform: translateY(-110%);
+}
+
+.header--shadow {
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.08);
+}
+
+@media (min-aspect-ratio: 1/1) {
+    .header--hidden {
+        transform: translateY(0);
+    }
+
+    .header--shadow {
+        box-shadow: none;
     }
 }
