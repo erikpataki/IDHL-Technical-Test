@@ -61,4 +61,4 @@ dist/ (generated after build)
 
 ## Notes
 - Basket content is intentionally pre-populated as per brief
-- Additional products added to both page and basket to demonstrate scrolling capability
+- Additional products added to both page and basket to demonstrate scrolling capability. Please just comment out the extra ones if needed.
